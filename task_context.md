@@ -27,7 +27,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 - System analyzes extracted text using OpenAI GPT-4 to generate structured outputs
 - User can view analysis results: summary, insights, health card, timeline, questions
 - User can access history of previously analyzed documents
-- System stores all data securely in Firestore with proper user isolation
+- System stores all data securely in PostgreSQL with proper user isolation and relational structure
 
 **Non-Functional:**
 
@@ -37,15 +37,15 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 **Constraints:**
 
-- Technical: Next.js 13 App Router, TypeScript, Firebase ecosystem, Vercel deployment
+- Technical: Next.js 13 App Router, TypeScript, PostgreSQL + TypeORM, Firebase Auth only, Vercel deployment
 - Business: MVP scope - single document analysis, no cross-document aggregation
 - Team: Focus on core functionality, defer advanced features
 
 ### Architecture Decisions
 
 - Pattern: Full-stack Next.js with API routes for unified codebase
-- Stack: Next.js 13 + TypeScript + Firebase + shadcn/ui + Tailwind CSS
-- Trade-offs: Chose Firebase ecosystem for rapid development over custom backend infrastructure
+- Stack: Next.js 13 + TypeScript + PostgreSQL + TypeORM + Firebase Auth + shadcn/ui + Tailwind CSS
+- Trade-offs: Chose PostgreSQL + TypeORM for relational data modeling practice over NoSQL simplicity
 
 ### Known Obstacles & Mitigations
 
@@ -58,11 +58,12 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 ### Decision Log
 
-| Unit | Decision                               | Context                   | Trade-offs                               | Revisit When                           |
-| ---- | -------------------------------------- | ------------------------- | ---------------------------------------- | -------------------------------------- |
-| 1    | Firebase Auth with Google only         | Rapid MVP development     | Limited to Google users                  | User feedback requests other providers |
-| 4    | shadcn/ui component system             | Consistent, accessible UI | Learning curve vs custom components      | UI complexity increases                |
-| 6    | Vision API primary, Tesseract fallback | Best accuracy with backup | Additional complexity vs single solution | OCR accuracy issues arise              |
+| Unit | Decision                               | Context                       | Trade-offs                               | Revisit When                           |
+| ---- | -------------------------------------- | ----------------------------- | ---------------------------------------- | -------------------------------------- |
+| 1    | Firebase Auth with Google only         | Rapid MVP development         | Limited to Google users                  | User feedback requests other providers |
+| 3    | PostgreSQL + TypeORM                   | Practice relational DB skills | More complex setup vs NoSQL simplicity   | Data modeling becomes too complex      |
+| 4    | shadcn/ui component system             | Consistent, accessible UI     | Learning curve vs custom components      | UI complexity increases                |
+| 6    | Vision API primary, Tesseract fallback | Best accuracy with backup     | Additional complexity vs single solution | OCR accuracy issues arise              |
 
 ## Implementation Roadmap
 
@@ -170,52 +171,54 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 **Research Confidence**: 95% (Well-documented component system)
 
-#### Unit 3: Database Schema & Firestore Setup [STATUS: Ready]
+#### Unit 3: PostgreSQL Database & TypeORM Setup [STATUS: Ready]
 
-**Purpose**: Design and implement secure data storage structure
-**Value Score**: 8.0 = Impact(4) × Priority(5) × Confidence(0.8)
-**Effort Score**: 3.5 = Complexity(4) × Integration(1) × (2-0.8)
-**Priority**: HIGH (Score: 2.3)
-**Complexity**: 4 points [Standard - mid-level task]
+**Purpose**: Design and implement relational database structure with TypeORM
+**Value Score**: 8.5 = Impact(4) × Priority(5) × Confidence(0.82)
+**Effort Score**: 5.0 = Complexity(5) × Integration(1.3) × (2-0.82)
+**Priority**: HIGH (Score: 1.7)
+**Complexity**: 5 points [Complex - senior task]
 
 **Success Criteria**:
 
-- [ ] Firestore security rules configured for user data isolation
-- [ ] Document schema defined with TypeScript interfaces
-- [ ] Collections structure: users/{uid}/documents/{docId}
-- [ ] CRUD operations for document metadata working
-- [ ] User data completely isolated between accounts
-- [ ] Firestore indexes configured for efficient queries
-- [ ] Data validation rules implemented
-- [ ] Zero security rule warnings
+- [ ] PostgreSQL database provisioned (Vercel Postgres or Supabase)
+- [ ] TypeORM configured with entity definitions and decorators
+- [ ] Database entities with proper relationships: User → Document → Analysis
+- [ ] Migration system working for schema changes
+- [ ] Repository pattern implemented for data access
+- [ ] CRUD operations with TypeORM repositories working
+- [ ] Database indexes and constraints defined via decorators
+- [ ] Connection pooling configured for production
+- [ ] Zero data leakage between users
 
 **Approach**:
 
-1. Design Firestore collections structure
-2. Create TypeScript interfaces for all data models
-3. Implement Firestore security rules
-4. Create database utility functions
-5. Test data isolation and access patterns
+1. Set up PostgreSQL database (Vercel Postgres recommended)
+2. Configure TypeORM with entity classes and decorators
+3. Create migrations for initial schema
+4. Implement repository pattern for data access
+5. Create database service layer with TypeORM repositories
 
 **Implementation Guidance**:
 
-- Schema: Follow PRD data models (MedicalDocument, AnalysisResult interfaces)
-- Security: Implement user-based access control rules
-- Structure: Use subcollections for user document organization
-- Types: Define comprehensive TypeScript interfaces in types/models.ts
-- Utils: Create reusable Firestore operation functions
+- Database: Use Vercel Postgres for seamless integration with deployment
+- Entities: Define entity classes with TypeORM decorators (@Entity, @Column, @OneToMany, etc.)
+- ORM: Use TypeORM repositories and query builder for database operations
+- Migrations: Use TypeORM migration system for schema versioning
+- Security: Implement service-layer access control based on user context
 
 **Boundaries**:
 
-- IN scope: Core document storage, user isolation, basic CRUD operations
-- OUT scope: Complex queries, data aggregation, backup strategies
-- Assumptions: Single-user document ownership model sufficient
+- IN scope: Core entity definitions, repository pattern, CRUD operations, migrations
+- OUT scope: Advanced TypeORM features, complex query optimization, database triggers
+- Assumptions: Standard repository pattern sufficient for medical document storage
 
 **Risks**:
 
-- Security rule complexity: Mitigate with thorough testing of access patterns
+- TypeORM configuration complexity: Use clear entity definitions and proper decorators
+- Migration management: Establish clear migration workflow from the start
 
-**Research Confidence**: 80% (Standard Firestore patterns with custom security needs)
+**Research Confidence**: 82% (TypeORM patterns established, but more configuration than Prisma)
 
 #### Unit 4: File Upload System [STATUS: Ready]
 
@@ -296,7 +299,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 **Implementation Guidance**:
 
 - Layout: Use shadcn/ui Sidebar and Sheet components for responsive navigation
-- Data: Real-time Firestore listeners for document list updates
+- Data: PostgreSQL queries via TypeORM repositories for document list updates
 - States: Skeleton loading components while data loads
 - Navigation: Next.js App Router with proper route structure
 - Profile: Simple user info display with sign-out option
@@ -309,9 +312,9 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 **Risks**:
 
-- Real-time data complexity: Mitigate with simple query patterns and error handling
+- Database query optimization: Mitigate with proper indexing and simple query patterns
 
-**Research Confidence**: 87.5% (Standard dashboard patterns with Firestore integration)
+**Research Confidence**: 87.5% (Standard dashboard patterns with PostgreSQL integration)
 
 #### Unit 6: OCR Text Extraction Service [STATUS: Ready]
 
@@ -474,7 +477,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 - [ ] Complete analysis pipeline: OCR → cleaning → GPT-4 → storage
 - [ ] Proper error handling and user-friendly error messages
 - [ ] Request/response validation matching TypeScript interfaces
-- [ ] Analysis results stored in Firestore with user association
+- [ ] Analysis results stored in PostgreSQL with user association
 - [ ] Processing status updates for long-running operations
 - [ ] API response time <60 seconds total
 - [ ] Zero unauthorized access or data leakage
@@ -485,14 +488,14 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 2. Implement Firebase Auth middleware for security
 3. Orchestrate OCR → cleaning → GPT-4 → storage pipeline
 4. Add comprehensive error handling and logging
-5. Store results in Firestore with proper user isolation
+5. Store results in PostgreSQL with proper user isolation
 
 **Implementation Guidance**:
 
 - Route: Use Next.js 13 App Router API route conventions
 - Auth: Verify Firebase ID tokens on every request
 - Pipeline: Chain OCR, cleaning, and GPT-4 services with error handling
-- Storage: Save complete analysis results to Firestore
+- Storage: Save complete analysis results to PostgreSQL via TypeORM
 - Validation: Use TypeScript interfaces for request/response validation
 
 **Boundaries**:
@@ -579,7 +582,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 **Approach**:
 
 1. Create dynamic route for document detail page
-2. Implement data fetching from Firestore
+2. Implement data fetching from PostgreSQL via TypeORM
 3. Compose analysis result components into full page
 4. Add navigation and metadata display
 5. Test responsive design and error cases
@@ -587,7 +590,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 **Implementation Guidance**:
 
 - Routing: Use Next.js App Router dynamic routes [id]
-- Data: Fetch document data using Firestore client SDK
+- Data: Fetch document data using TypeORM repositories
 - Layout: Compose result components with proper spacing and hierarchy
 - Navigation: Use Next.js Link components and breadcrumb navigation
 - States: Handle loading, error, and not-found states appropriately
@@ -602,7 +605,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 - Large document data loading: Implement efficient data fetching and caching
 
-**Research Confidence**: 87.5% (Standard detail page patterns with Firestore integration)
+**Research Confidence**: 87.5% (Standard detail page patterns with PostgreSQL integration)
 
 #### Unit 12: Error Handling & User Feedback [STATUS: Ready]
 
@@ -833,6 +836,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 ### Pattern Library
 
 - Firebase Auth: Google OAuth integration patterns
+- PostgreSQL + TypeORM: Entity-based ORM with decorators and repository pattern
 - Next.js API Routes: Service orchestration and error handling
 - shadcn/ui: Component composition and theming
 - GPT-4 Integration: Prompt engineering and response parsing
