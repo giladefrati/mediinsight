@@ -2,10 +2,10 @@
 
 ## Quick Status
 
-Current: Unit 3 - PostgreSQL Database & TypeORM Setup [STATUS: Complete]  
-Progress: 3/15 units (20% complete)
+Current: Unit 4 - File Upload System [STATUS: Complete]  
+Progress: 4/15 units (27% complete)
 Blockers: None
-Next: Ready for Unit 4 - File Upload System
+Next: Ready for Unit 5 - Dashboard & Navigation
 
 ## Strategic Context
 
@@ -224,7 +224,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 **Research Confidence**: 82% (TypeORM patterns established, but more configuration than Prisma)
 
-#### Unit 4: File Upload System [STATUS: Ready]
+#### Unit 4: File Upload System [STATUS: Complete]
 
 **Purpose**: Enable secure document upload to Firebase Storage
 **Value Score**: 8.5 = Impact(5) × Priority(4) × Confidence(0.85)
@@ -234,15 +234,15 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 **Success Criteria**:
 
-- [ ] File upload component with drag-and-drop functionality
-- [ ] Direct upload to Firebase Storage with progress tracking
-- [ ] File type validation (PDF, JPG, PNG only)
-- [ ] File size limits enforced (max 10MB)
-- [ ] Upload progress indicator working
-- [ ] Error handling for failed uploads
-- [ ] Files stored with proper user namespacing
-- [ ] Storage security rules preventing unauthorized access
-- [ ] Zero upload failures for valid files
+- [x] File upload component with drag-and-drop functionality
+- [x] Direct upload to Firebase Storage with progress tracking
+- [x] File type validation (PDF, JPG, PNG only)
+- [x] File size limits enforced (max 10MB)
+- [x] Upload progress indicator working
+- [x] Error handling for failed uploads
+- [x] Files stored with proper user namespacing
+- [x] Storage security rules preventing unauthorized access
+- [x] Zero upload failures for valid files
 
 **Approach**:
 
@@ -812,6 +812,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 | 1: Firebase Project Setup & Authentication | 3.0              | 2.8           | -0.2  | Firebase SSR handling requires client-side initialization guards         |
 | 2: Project Structure & UI Foundation       | 4.0              | 3.8           | -0.2  | Most UI foundation already existed; focus on welcome page and navigation |
 | 3: PostgreSQL Database & TypeORM Setup     | 5.0              | 5.2           | +0.2  | TypeScript decorator configuration required additional tsconfig updates  |
+| 4: File Upload System                      | 4.2              | 3.8           | -0.4  | Firebase Storage integration straightforward with good documentation     |
 
 ### Discoveries
 
@@ -825,6 +826,10 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 - PostgreSQL + TypeORM entity relationships work seamlessly with proper decorator configuration
 - Database service layer provides excellent user data isolation through query-level filtering
 - Next.js requires serverComponentsExternalPackages configuration for TypeORM and pg packages
+- Firebase Storage uploadBytesResumable provides reliable progress tracking for large files
+- React drag-and-drop events require proper preventDefault/stopPropagation handling
+- Client-side file validation essential before Firebase Storage upload to prevent API waste
+- Firebase Storage security rules with user isolation work perfectly with {userId} path patterns
 
 ### Pattern Confirmations
 
@@ -838,6 +843,10 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 - ✓ Repository pattern with TypeORM provides clean data access abstraction
 - ✓ PostgreSQL JSON column types handle complex nested data structures perfectly
 - ! Discovered: User data isolation best implemented at service layer, not entity level
+- ✓ Firebase Storage direct upload pattern with progress callbacks works as documented
+- ✓ File validation client-side before upload prevents unnecessary API calls and errors
+- ✓ Drag-and-drop UI with visual feedback provides excellent user experience
+- ! Discovered: React Hook dependency warnings require careful callback dependency management
 
 ## Collaboration Zone
 
