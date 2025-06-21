@@ -2,10 +2,10 @@
 
 ## Quick Status
 
-Current: Unit 4 - File Upload System [STATUS: Complete]  
-Progress: 4/15 units (27% complete)
+Current: Unit 5 - Dashboard & Navigation [STATUS: Complete]  
+Progress: 5/15 units (33% complete)
 Blockers: None
-Next: Ready for Unit 5 - Dashboard & Navigation
+Next: Ready for Unit 6 - OCR Text Extraction Service
 
 ## Strategic Context
 
@@ -272,7 +272,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 **Research Confidence**: 85% (Firebase Storage patterns with custom validation)
 
-#### Unit 5: Dashboard & Navigation [STATUS: Ready]
+#### Unit 5: Dashboard & Navigation [STATUS: Complete]
 
 **Purpose**: Create main application interface and navigation
 **Value Score**: 7.0 = Impact(4) × Priority(4) × Confidence(0.875)
@@ -282,15 +282,15 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 **Success Criteria**:
 
-- [ ] Dashboard page showing upload interface when no documents
-- [ ] Document list showing previously analyzed documents
-- [ ] Navigation between upload and document history
-- [ ] Responsive layout working on all screen sizes
-- [ ] Loading states for data fetching
-- [ ] Empty states with helpful messaging
-- [ ] User profile section with sign-out functionality
-- [ ] Breadcrumb navigation for document details
-- [ ] Zero layout issues across devices
+- [x] Dashboard page showing upload interface when no documents
+- [x] Document list showing previously analyzed documents
+- [x] Navigation between upload and document history
+- [x] Responsive layout working on all screen sizes
+- [x] Loading states for data fetching
+- [x] Empty states with helpful messaging
+- [x] User profile section with sign-out functionality
+- [x] Breadcrumb navigation for document details
+- [x] Zero layout issues across devices
 
 **Approach**:
 
@@ -807,12 +807,13 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 ### Progress Log
 
-| Unit                                       | Estimated Effort | Actual Effort | Delta | Lesson                                                                   |
-| ------------------------------------------ | ---------------- | ------------- | ----- | ------------------------------------------------------------------------ |
-| 1: Firebase Project Setup & Authentication | 3.0              | 2.8           | -0.2  | Firebase SSR handling requires client-side initialization guards         |
-| 2: Project Structure & UI Foundation       | 4.0              | 3.8           | -0.2  | Most UI foundation already existed; focus on welcome page and navigation |
-| 3: PostgreSQL Database & TypeORM Setup     | 5.0              | 5.2           | +0.2  | TypeScript decorator configuration required additional tsconfig updates  |
-| 4: File Upload System                      | 4.2              | 3.8           | -0.4  | Firebase Storage integration straightforward with good documentation     |
+| Unit                                       | Estimated Effort | Actual Effort | Delta | Lesson                                                                                    |
+| ------------------------------------------ | ---------------- | ------------- | ----- | ----------------------------------------------------------------------------------------- |
+| 1: Firebase Project Setup & Authentication | 3.0              | 2.8           | -0.2  | Firebase SSR handling requires client-side initialization guards                          |
+| 2: Project Structure & UI Foundation       | 4.0              | 3.8           | -0.2  | Most UI foundation already existed; focus on welcome page and navigation                  |
+| 3: PostgreSQL Database & TypeORM Setup     | 5.0              | 5.2           | +0.2  | TypeScript decorator configuration required additional tsconfig updates                   |
+| 4: File Upload System                      | 4.2              | 3.8           | -0.4  | Firebase Storage integration straightforward with good documentation                      |
+| 5: Dashboard & Navigation                  | 3.0              | 2.8           | -0.2  | Tab-based navigation with document list and empty states worked seamlessly with shadcn/ui |
 
 ### Discoveries
 
@@ -830,6 +831,10 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 - React drag-and-drop events require proper preventDefault/stopPropagation handling
 - Client-side file validation essential before Firebase Storage upload to prevent API waste
 - Firebase Storage security rules with user isolation work perfectly with {userId} path patterns
+- Tabs component from shadcn/ui provides excellent navigation UX with hash-based routing
+- DocumentList component with loading, empty, and error states enhances user experience
+- Breadcrumb navigation with shadcn/ui components integrates seamlessly with dashboard layout
+- date-fns library provides robust date formatting for document timestamps
 
 ### Pattern Confirmations
 
@@ -847,6 +852,10 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 - ✓ File validation client-side before upload prevents unnecessary API calls and errors
 - ✓ Drag-and-drop UI with visual feedback provides excellent user experience
 - ! Discovered: React Hook dependency warnings require careful callback dependency management
+- ✓ shadcn/ui Tabs component with controlled state provides excellent tabbed navigation
+- ✓ DocumentList with pagination, loading states, and empty states pattern works perfectly
+- ✓ Breadcrumb navigation pattern with shadcn/ui components integrates seamlessly
+- ! Discovered: Firebase Admin initialization at top-level causes Next.js build issues - use dynamic imports
 
 ## Collaboration Zone
 
