@@ -2,10 +2,10 @@
 
 ## Quick Status
 
-Current: Unit 1 - Firebase Project Setup & Authentication [STATUS: Complete]
-Progress: 1/15 units (7% complete)
+Current: Unit 2 - Project Structure & UI Foundation [STATUS: Complete]  
+Progress: 2/15 units (13% complete)
 Blockers: None
-Next: Ready for Unit 2 - Project Structure & UI Foundation
+Next: Ready for Unit 3 - PostgreSQL Database & TypeORM Setup
 
 ## Strategic Context
 
@@ -124,7 +124,7 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 **Research Confidence**: 90% (Standard Firebase pattern)
 
-#### Unit 2: Project Structure & UI Foundation [STATUS: Ready]
+#### Unit 2: Project Structure & UI Foundation [STATUS: Complete]
 
 **Purpose**: Establish consistent UI foundation and project organization
 **Value Score**: 7.5 = Impact(3) × Priority(5) × Confidence(0.95)
@@ -803,21 +803,28 @@ Users can upload medical documents (PDFs, images) and receive AI-generated summa
 
 ### Progress Log
 
-| Unit                                       | Estimated Effort | Actual Effort | Delta | Lesson                                                           |
-| ------------------------------------------ | ---------------- | ------------- | ----- | ---------------------------------------------------------------- |
-| 1: Firebase Project Setup & Authentication | 3.0              | 2.8           | -0.2  | Firebase SSR handling requires client-side initialization guards |
+| Unit                                       | Estimated Effort | Actual Effort | Delta | Lesson                                                                   |
+| ------------------------------------------ | ---------------- | ------------- | ----- | ------------------------------------------------------------------------ |
+| 1: Firebase Project Setup & Authentication | 3.0              | 2.8           | -0.2  | Firebase SSR handling requires client-side initialization guards         |
+| 2: Project Structure & UI Foundation       | 4.0              | 3.8           | -0.2  | Most UI foundation already existed; focus on welcome page and navigation |
 
 ### Discoveries
 
 - Firebase auth requires client-side only initialization to prevent SSR issues
 - Next.js 15 with Turbopack has occasional build issues, but dev server works reliably
 - Google OAuth integration works seamlessly with Firebase Auth v9+ modular SDK
+- shadcn/ui components system was already fully configured and working
+- Most UI foundation components (sidebar, header, navigation) were already implemented
+- Welcome page structure successfully integrates authenticated/unauthenticated states
 
 ### Pattern Confirmations
 
 - ✓ React Context pattern for auth state management worked exactly as expected
 - ✗ Firebase client-side only initialization pattern needed for Next.js SSR compatibility
 - ! Discovered: TypeScript type guards essential for optional Firebase auth during SSR
+- ✓ shadcn/ui component composition pattern works perfectly with Tailwind CSS
+- ✓ Responsive design foundation with shadcn/ui sidebar works seamlessly
+- ✓ Theme provider and dark/light mode toggle integration successful
 
 ## Collaboration Zone
 
