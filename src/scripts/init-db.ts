@@ -1,7 +1,11 @@
 #!/usr/bin/env tsx
 
 import "reflect-metadata";
+import { config } from "dotenv";
 import { initializeDatabase } from "../lib/database";
+
+// Load environment variables from .env.local
+config({ path: ".env.local" });
 
 async function initDB() {
   try {

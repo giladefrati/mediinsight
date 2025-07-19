@@ -22,7 +22,7 @@ export class User {
   email: string;
 
   @Column("varchar", { length: 255, nullable: true })
-  displayName: string | null;
+  name: string | null;
 
   @Column("varchar", { length: 500, nullable: true })
   photoURL: string | null;
